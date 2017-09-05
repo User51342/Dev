@@ -58,9 +58,9 @@ namespace WlanDetection
             private string GetReport(List<WiFiSignal> wifiSignals)
         {
             StringBuilder builder = new StringBuilder();
-            foreach(var wifi in wifiSignals.OrderByDescending(r => r.SignalBars))
+            foreach(var wifi in wifiSignals.OrderByDescending(r => r.SignalHistories.OrderByDescending(s => s.SignalBars)))
             {
-                builder.AppendLine($"{wifi.Ssid} | {wifi.NetworkEncryptionType} | {wifi.Network​Authentication​Type} | {wifi.SignalBars} | {wifi.NetworkRssiInDecibelMilliwatts} ");
+                builder.AppendLine($"{wifi.Ssid} | {wifi.SignalHistories[0].NetworkEncryptionType} | {wifi.SignalHistories[0].Network​Authentication​Type} | {wifi.SignalHistories[0].SignalBars} | {wifi.SignalHistories[0].NetworkRssiInDecibelMilliwatts} ");
             }
             return builder.ToString();
             

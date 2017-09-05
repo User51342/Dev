@@ -100,6 +100,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignalHistory.cs" />
     <Compile Include="WiFiSignal.cs" />
     <Compile Include="WLan.cs" />
   </ItemGroup>
