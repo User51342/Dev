@@ -45,5 +45,6 @@
 
   <Capabilities>
     <DeviceCapability Name="wifiControl" />
+    <DeviceCapability Name="location"/>
   </Capabilities>
 </Package>

@@ -2,24 +2,14 @@
     x:Class="WlanDetection.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:WlanDetection"
+    xmlns:Views="using:WlanDetection.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{Binding ScannerViewInstance, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <TextBlock FontSize="36" Grid.RowSpan="2" >WiFi Scanner</TextBlock>
-        <StackPanel Name="spButtons" Grid.Row="1" Orientation="Horizontal">
-            <Button Name="btnScan" Click="btnScan_Click" Grid.Row="1">Scan For
-      Networks</Button>
-        </StackPanel>
-        <TextBox Name="txbReport" TextWrapping="Wrap" AcceptsReturn="True"
-    Grid.Row="2"></TextBox>
+    <Grid  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Views:ScannerView />
     </Grid>
 
 </Page>

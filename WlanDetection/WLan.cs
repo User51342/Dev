@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.WiFi;
@@ -37,7 +35,6 @@ namespace WlanDetection
 
         public async Task<List<WiFiSignal>> Scan()
         {
-
             await ScanForNetworks();
             return WiFiSignals;
         }
@@ -76,41 +73,23 @@ namespace WlanDetection
             {
                 await this.WiFiAdapter.ScanAsync();
             }
+            WiFiSignals.Clear();
 
             foreach (var availableNetwork in WiFiAdapter.NetworkReport.AvailableNetworks)
             {
-                WiFiSignal wifiSignal = WiFiSignals.FirstOrDefault(w => w.MacAddress == availableNetwork.Bssid);
-                if (wifiSignal != null)
+                var wifiSignal = new WiFiSignal()
                 {
-                    wifiSignal.SignalHistories.Add(new SignalHistory()
-                    {
-                        HistoryDateTime = DateTime.Now,
-                        SignalBars = availableNetwork.SignalBars,
-                        ChannelCenterFrequencyInKilohertz = availableNetwork.ChannelCenterFrequencyInKilohertz,
-                        NetworkEncryptionType = availableNetwork.SecuritySettings.NetworkEncryptionType.ToString(),
-                        Network​Authentication​Type = availableNetwork.SecuritySettings.Network​Authentication​Type.ToString(),
-                        NetworkRssiInDecibelMilliwatts = availableNetwork.NetworkRssiInDecibelMilliwatts,
-                    });
-                }
-                else
-                {
-                    wifiSignal = new WiFiSignal()
-                    {
-                        MacAddress = availableNetwork.Bssid,
-                        Ssid = availableNetwork.Ssid,
-                        NetworkKind = availableNetwork.NetworkKind.ToString(),
-                        PhysicalKind = availableNetwork.PhyKind.ToString(),
-                    };
-                    wifiSignal.SignalHistories.Add(new SignalHistory()
-                    {
-                        HistoryDateTime = DateTime.Now,
-                        SignalBars = availableNetwork.SignalBars,
-                        ChannelCenterFrequencyInKilohertz = availableNetwork.ChannelCenterFrequencyInKilohertz,
-                        NetworkEncryptionType = availableNetwork.SecuritySettings.NetworkEncryptionType.ToString(),
-                        Network​Authentication​Type = availableNetwork.SecuritySettings.Network​Authentication​Type.ToString(),
-                        NetworkRssiInDecibelMilliwatts = availableNetwork.NetworkRssiInDecibelMilliwatts,
-                    });
-                }
+                    MacAddress = availableNetwork.Bssid,
+                    Ssid = availableNetwork.Ssid,
+                    NetworkKind = availableNetwork.NetworkKind.ToString(),
+                    PhysicalKind = availableNetwork.PhyKind.ToString(),
+                    RecordTime = DateTime.Now,
+                    SignalBars = availableNetwork.SignalBars,
+                    ChannelCenterFrequencyInKilohertz = availableNetwork.ChannelCenterFrequencyInKilohertz,
+                    NetworkEncryptionType = availableNetwork.SecuritySettings.NetworkEncryptionType.ToString(),
+                    Network​Authentication​Type = availableNetwork.SecuritySettings.Network​Authentication​Type.ToString(),
+                    NetworkRssiInDecibelMilliwatts = availableNetwork.NetworkRssiInDecibelMilliwatts
+                };
                 WiFiSignals.Add(wifiSignal);
             }
         }
