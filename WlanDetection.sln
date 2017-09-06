@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WlanDetection", "WlanDetection\WlanDetection.csproj", "{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}"
 EndProject
@@ -18,6 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}.Debug|Any CPU.Build.0 = Debug|x86
+		{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}.Debug|ARM.ActiveCfg = Debug|ARM
 		{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}.Debug|ARM.Build.0 = Debug|ARM
 		{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -40,5 +42,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44FB655A-563A-42E2-9A5C-A12A077B8837}
 	EndGlobalSection
 EndGlobal
