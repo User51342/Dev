@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<UserControl xmlns:my="using:Windows.UI.Xaml.Controls.Maps" 
     x:Class="WlanDetection.Views.ScannerView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,21 +6,34 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
+    d:DesignHeight="400"
     d:DesignWidth="400">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
+            <RowDefinition Height="190"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock FontSize="36" Grid.RowSpan="2" >WiFi Scanner</TextBlock>
+        <TextBlock FontSize="16" Grid.RowSpan="2" >WiFi Scanner</TextBlock>
         <StackPanel Name="spButtons" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
             <Button Name="btnScan" Command="{Binding ScanStartCommand}" Grid.Row="1" Content="{Binding StartScanButtonText}"></Button>
             <TextBlock Padding="10" Text="{Binding ActualCoordinates}"></TextBlock>
         </StackPanel>
-        <TextBox Name="txbReport" TextWrapping="Wrap" AcceptsReturn="True"
-    Grid.Row="2"></TextBox>
+        <TextBox Name="txbReport" TextWrapping="Wrap" AcceptsReturn="True" Grid.Row="2" Text="{Binding OutputText}"></TextBox>
+        <my:MapControl Center="{Binding CurrentLocation}" ZoomLevel="12" LandmarksVisible="True" MapServiceToken="zQnWmhYXk6CWsfrBorCq~WL0ls9EGwyojPbJLjBsZnA~Ap0rznpPJi80N-hpJj1V3sis5uZbtryi7__TDPbDNZaYq1syds-4cj6uOXj5pQyp" Grid.Row="3"/>
+        <ListView ItemsSource="{Binding WifiSignals}"  Grid.Row="4">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Ssid}" Width="200" Padding="10,0,0,0"></TextBlock>
+                        <TextBlock Text="{Binding NetworkRssiInDecibelMilliwatts}" Padding="10,0,0,0"></TextBlock>
+                        <TextBlock Text="{Binding NetworkEncryptionType}" Padding="10,0,0,0"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>

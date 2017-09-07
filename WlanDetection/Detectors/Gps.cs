@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 
-namespace WlanDetection
+namespace WlanDetection.Detectors
 {
     public class Gps
     {
