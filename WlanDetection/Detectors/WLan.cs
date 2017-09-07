@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.WiFi;
 
-namespace WlanDetection
+namespace WlanDetection.Detectors
 {
 
     public class WLan
@@ -14,38 +14,38 @@ namespace WlanDetection
         #endregion
 
         #region Properties
-        private WiFiAdapter WiFiAdapter { get; set; }
+        private WiFiAdapter _WiFiAdapter { get; set; }
 
         private List<WiFiSignal> WiFiSignals
         {
             get { return _WiFiSignals; }
             set { _WiFiSignals = value; }
         }
-
         #endregion
 
         #region Construction / Initialization / Deconstruction
         public WLan()
         {
-            Init();
         }
         #endregion
 
         #region Public implementations
-
         public async Task<List<WiFiSignal>> Scan()
-        {
+        {try { 
+            if (_WiFiAdapter == null)
+            {
+                await InitializeFirstAdapter();
+            }
             await ScanForNetworks();
+            }catch( Exception ex)
+            {
+                throw ex;
+            }
             return WiFiSignals;
         }
         #endregion
 
         #region Private implementations
-        private async void Init()
-        {
-            await InitializeFirstAdapter();
-        }
-
         private async Task InitializeFirstAdapter()
         {
             var access = await WiFiAdapter.RequestAccessAsync();
@@ -58,7 +58,7 @@ namespace WlanDetection
                 var wifiAdapterResults = await DeviceInformation.FindAllAsync(WiFiAdapter.GetDeviceSelector());
                 if (wifiAdapterResults.Count >= 1)
                 {
-                    this.WiFiAdapter = await WiFiAdapter.FromIdAsync(wifiAdapterResults[0].Id);
+                    this._WiFiAdapter = await WiFiAdapter.FromIdAsync(wifiAdapterResults[0].Id);
                 }
                 else
                 {
@@ -69,13 +69,13 @@ namespace WlanDetection
 
         private async Task ScanForNetworks()
         {
-            if (this.WiFiAdapter != null)
+            if (this._WiFiAdapter != null)
             {
-                await this.WiFiAdapter.ScanAsync();
+                await this._WiFiAdapter.ScanAsync();
             }
             WiFiSignals.Clear();
 
-            foreach (var availableNetwork in WiFiAdapter.NetworkReport.AvailableNetworks)
+            foreach (var availableNetwork in _WiFiAdapter.NetworkReport.AvailableNetworks)
             {
                 var wifiSignal = new WiFiSignal()
                 {
@@ -83,7 +83,6 @@ namespace WlanDetection
                     Ssid = availableNetwork.Ssid,
                     NetworkKind = availableNetwork.NetworkKind.ToString(),
                     PhysicalKind = availableNetwork.PhyKind.ToString(),
-                    RecordTime = DateTime.Now,
                     SignalBars = availableNetwork.SignalBars,
                     ChannelCenterFrequencyInKilohertz = availableNetwork.ChannelCenterFrequencyInKilohertz,
                     NetworkEncryptionType = availableNetwork.SecuritySettings.NetworkEncryptionType.ToString(),

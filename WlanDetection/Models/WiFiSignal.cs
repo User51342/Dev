@@ -18,8 +18,6 @@ namespace WlanDetection
         public string NetworkEncryptionType { get; set; }
         public string Network​Authentication​Type { get; set; }
         public double NetworkRssiInDecibelMilliwatts { get; set; }
-        public DateTime RecordTime { get; set; }
-        public Geocoordinate GeoPosition { get; set; }
         #endregion
 
         #region Construction / Initialization / Deconstruction
