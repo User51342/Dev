@@ -10,20 +10,17 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="190"/>
+
             <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <TextBlock FontSize="16" Grid.RowSpan="2" >WiFi Scanner</TextBlock>
-        <StackPanel Name="spButtons" Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
-            <Button Name="btnScan" Command="{Binding ScanStartCommand}" Grid.Row="1" Content="{Binding StartScanButtonText}"></Button>
+        <StackPanel Name="spButtons" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Padding="10,0,0,0">
+            <Button Name="btnScan" Command="{Binding ScanStartCommand}" Content="{Binding StartScanButtonText}"></Button>
             <TextBlock Padding="10" Text="{Binding ActualCoordinates}"></TextBlock>
         </StackPanel>
-        <TextBox Name="txbReport" TextWrapping="Wrap" AcceptsReturn="True" Grid.Row="2" Text="{Binding OutputText}"></TextBox>
-        <my:MapControl Center="{Binding CurrentLocation}" ZoomLevel="12" LandmarksVisible="True" MapServiceToken="zQnWmhYXk6CWsfrBorCq~WL0ls9EGwyojPbJLjBsZnA~Ap0rznpPJi80N-hpJj1V3sis5uZbtryi7__TDPbDNZaYq1syds-4cj6uOXj5pQyp" Grid.Row="3"/>
-        <ListView ItemsSource="{Binding WifiSignals}"  Grid.Row="4">
+        <my:MapControl Center="{Binding CurrentLocation}" ZoomLevel="12" LandmarksVisible="True" MapServiceToken="zQnWmhYXk6CWsfrBorCq~WL0ls9EGwyojPbJLjBsZnA~Ap0rznpPJi80N-hpJj1V3sis5uZbtryi7__TDPbDNZaYq1syds-4cj6uOXj5pQyp" Grid.Row="3" Visibility="Collapsed"/>
+        <ListView ItemsSource="{Binding WifiSignals}"  Grid.Row="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -34,5 +31,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <TextBox Name="txbReport" TextWrapping="Wrap" AcceptsReturn="True" Grid.Row="2" Text="{Binding OutputText}" BorderThickness="0"></TextBox>
     </Grid>
 </UserControl>

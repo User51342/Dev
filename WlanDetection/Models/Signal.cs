@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Windows.Devices.Geolocation;
 
 namespace WlanDetection
@@ -11,7 +12,7 @@ namespace WlanDetection
         #endregion
 
         #region Properties
-        public Geoposition GeoPosition { get; set; }
+        public Geoposition Geoposition { get; set; }
         public List<WiFiSignal> WifiSignals { get; set; }
         public DateTime RecordTime { get; private set; }
         public List<string> Errors

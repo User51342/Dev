@@ -55,7 +55,7 @@ namespace WlanDetection.Detectors
             }
             var position = await Gps.GetPosition();
 
-            signal.GeoPosition = position;
+            signal.Geoposition = position;
             signal.WifiSignals = wifiSignals;
 
             ScanUpdated(signal);

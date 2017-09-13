@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WlanDetection", "WlanDetection\WlanDetection.csproj", "{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WLanDetectionServer", "WLanDetectionServer\WLanDetectionServer.csproj", "{B89222C4-4E81-402C-9090-EB0C2D024799}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,22 @@ Global
 		{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}.Release|x86.ActiveCfg = Release|x86
 		{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}.Release|x86.Build.0 = Release|x86
 		{804B321B-CCD1-4BD5-B85F-9C8B3322FC5F}.Release|x86.Deploy.0 = Release|x86
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Debug|x64.Build.0 = Debug|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Debug|x86.Build.0 = Debug|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Release|ARM.Build.0 = Release|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Release|x64.ActiveCfg = Release|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Release|x64.Build.0 = Release|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Release|x86.ActiveCfg = Release|Any CPU
+		{B89222C4-4E81-402C-9090-EB0C2D024799}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

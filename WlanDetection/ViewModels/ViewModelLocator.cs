@@ -21,6 +21,7 @@ namespace WlanDetection.ViewModels
             }
 
             //Register your services used here
+            SimpleIoc.Default.Register<ITransferService, TransferService>();
             SimpleIoc.Default.Register<INavigationService, NavigationService>();
             SimpleIoc.Default.Register<ScannerViewModel>();
         }

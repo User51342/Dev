@@ -23,6 +23,7 @@ namespace WlanDetection.ViewModels
         private ObservableCollection<WiFiSignal> _WifiSignals = new ObservableCollection<WiFiSignal>();
         private string _OutputText;
         private Geopoint _CurrentLocation;
+        private ITransferService _TransferService;
         #endregion
 
         #region Properties
@@ -103,9 +104,19 @@ namespace WlanDetection.ViewModels
         #endregion
 
         #region Construction / Initialization / Deconstruction
-        public ScannerViewModel()
+        public ScannerViewModel(ITransferService transferService)
         {
             ScanStartCommand = new RelayCommand(ExecuteScanStartCommand);
+            _TransferService = transferService;
+            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
+                WifiSignals.Add(new WiFiSignal() { Ssid = "First net", ChannelCenterFrequencyInKilohertz = 1, NetworkRssiInDecibelMilliwatts = -12d, NetworkKind = "Ccmp" });
+                WifiSignals.Add(new WiFiSignal() { Ssid = "Second net", ChannelCenterFrequencyInKilohertz = 1, NetworkRssiInDecibelMilliwatts = -33, NetworkKind = "Ccmp" });
+                WifiSignals.Add(new WiFiSignal() { Ssid = "Third net", ChannelCenterFrequencyInKilohertz = 1, NetworkRssiInDecibelMilliwatts = -54, NetworkKind = "Ccmp" });
+                WifiSignals.Add(new WiFiSignal() { Ssid = "Fourth net", ChannelCenterFrequencyInKilohertz = 1, NetworkRssiInDecibelMilliwatts = -64, NetworkKind = "Ccmp" });
+                WifiSignals.Add(new WiFiSignal() { Ssid = "Fiveth net", ChannelCenterFrequencyInKilohertz = 1, NetworkRssiInDecibelMilliwatts = -66, NetworkKind = "Ccmp" });
+                WifiSignals.Add(new WiFiSignal() { Ssid = "Sixth net", ChannelCenterFrequencyInKilohertz = 1, NetworkRssiInDecibelMilliwatts = -67, NetworkKind = "Ccmp" });
+            }
         }
         #endregion
 
@@ -130,6 +141,9 @@ namespace WlanDetection.ViewModels
             else
             {
                 _Scanner.StopScanner();
+                WifiSignals.Clear();
+                OutputText = string.Empty;
+                ActualCoordinates = string.Empty;
             }
         }
 
@@ -143,10 +157,11 @@ namespace WlanDetection.ViewModels
                     WifiSignals.Add(s);
                 }
 
-                BasicGeoposition basicGeoPosition = new BasicGeoposition() { Latitude = signal.GeoPosition.Coordinate.Latitude, Longitude = signal.GeoPosition.Coordinate.Longitude };
+                BasicGeoposition basicGeoPosition = new BasicGeoposition() { Latitude = signal.Geoposition.Coordinate.Latitude, Longitude = signal.Geoposition.Coordinate.Longitude };
                 CurrentLocation = new Geopoint(basicGeoPosition);// signal.GeoPosition.Coordinate.Point;
 
-                OutputText = $"Latitude: {signal.GeoPosition.Coordinate.Latitude.ToString()}, Longitude: {signal.GeoPosition.Coordinate.Longitude.ToString()}";
+                ActualCoordinates = $"Latitude: {signal.Geoposition.Coordinate.Latitude.ToString()}, Longitude: {signal.Geoposition.Coordinate.Longitude.ToString()}";
+                _TransferService.Save(signal);
             }
             else
             {
