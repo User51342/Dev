@@ -1,18 +1,14 @@
 ﻿using AutoMapper;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WlanDetection.SignalService;
 
 namespace WlanDetection.Mapping
 {
-    public class WifiSignalsConvert : ITypeConverter<WiFiSignal, SignalService.WifiSignal>
+    public class WifiSignalsConvert : ITypeConverter<WiFiSignal, WifiSignalDto>
     {
-        public WifiSignal Convert(WiFiSignal source, WifiSignal destination, ResolutionContext context)
+        public WifiSignalDto Convert(WiFiSignal source, WifiSignalDto destination, ResolutionContext context)
         {
-            return new WifiSignal()
+            return new WifiSignalDto()
             {
                 ChannelCenterFrequencyInKilohertz = source.ChannelCenterFrequencyInKilohertz,
                 MacAddress = source.MacAddress,
@@ -25,9 +21,9 @@ namespace WlanDetection.Mapping
                 Ssid = source.Ssid
             };
         }
-        public IEnumerable<WifiSignal> Convert(List<WiFiSignal> source, List<WifiSignal> destination, ResolutionContext context)
+        public IEnumerable<WifiSignalDto> Convert(List<WiFiSignal> source, List<WifiSignalDto> destination, ResolutionContext context)
         {
-            return Mapper.Map<List<WiFiSignal>, List<SignalService.WifiSignal>>(source);
+            return Mapper.Map<List<WiFiSignal>, List<WifiSignalDto>>(source);
         }
     }
 }

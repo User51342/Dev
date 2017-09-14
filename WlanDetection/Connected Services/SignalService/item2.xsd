@@ -1,34 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WLanDetectionServer" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WLanDetectionServer" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="ArrayOfSignal">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Signal" nillable="true" type="tns:Signal" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfSignal" nillable="true" type="tns:ArrayOfSignal" />
-  <xs:complexType name="Signal">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Geoposition" nillable="true" type="tns:Geoposition" />
-      <xs:element minOccurs="0" name="RecordTime" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="WifiSignals" nillable="true" type="tns:ArrayOfWifiSignal" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Signal" nillable="true" type="tns:Signal" />
-  <xs:complexType name="Geoposition">
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WLanDetectionServer.Entities" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WLanDetectionServer.Entities" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="SignalDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="Altitude" nillable="true" type="xs:double" />
       <xs:element minOccurs="0" name="Latitude" type="xs:double" />
       <xs:element minOccurs="0" name="Longiture" type="xs:double" />
+      <xs:element minOccurs="0" name="RecordTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="WifiSignals" nillable="true" type="tns:ArrayOfWifiSignalDto" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="Geoposition" nillable="true" type="tns:Geoposition" />
-  <xs:complexType name="ArrayOfWifiSignal">
+  <xs:element name="SignalDto" nillable="true" type="tns:SignalDto" />
+  <xs:complexType name="ArrayOfWifiSignalDto">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="WifiSignal" nillable="true" type="tns:WifiSignal" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WifiSignalDto" nillable="true" type="tns:WifiSignalDto" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfWifiSignal" nillable="true" type="tns:ArrayOfWifiSignal" />
-  <xs:complexType name="WifiSignal">
+  <xs:element name="ArrayOfWifiSignalDto" nillable="true" type="tns:ArrayOfWifiSignalDto" />
+  <xs:complexType name="WifiSignalDto">
     <xs:sequence>
       <xs:element minOccurs="0" name="ChannelCenterFrequencyInKilohertz" type="xs:int" />
       <xs:element minOccurs="0" name="MacAddress" nillable="true" type="xs:string" />
@@ -39,7 +27,8 @@
       <xs:element minOccurs="0" name="PhysicalKind" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="SignalBars" type="xs:unsignedByte" />
       <xs:element minOccurs="0" name="Ssid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WifiSignalId" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="WifiSignal" nillable="true" type="tns:WifiSignal" />
+  <xs:element name="WifiSignalDto" nillable="true" type="tns:WifiSignalDto" />
 </xs:schema>

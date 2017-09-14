@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.ServiceModel;
 using System.Threading.Tasks;
 
 namespace WlanDetection
@@ -12,23 +12,21 @@ namespace WlanDetection
         {
             try
             {
-                var tSignal = Mapper.Map<Signal, SignalService.Signal>(signal);
+                var tSignal = Mapper.Map<Signal, SignalService.SignalDto>(signal);
                 var client = new SignalService.SignalServiceClient();
                 var result = await client.SaveAsync(tSignal);
                 return result;
             }
+            catch(CommunicationException ex)
+            {
+                signal.Errors.Add(ex.Message);
+                return -1;
+            }
             catch(Exception ex)
             {
-                return 0;
+                signal.Errors.Add("Can´t connect to server.");
+                return -1;
             }
-        }
-
-        public async Task<int> SaveList(List<Signal> signals)
-        {
-            var tSignals = Mapper.Map<List<Signal>, ObservableCollection<SignalService.Signal>>(signals);
-            var client = new SignalService.SignalServiceClient();
-            var result = await client.SaveListAsync(tSignals);
-            return result;
         }
     }
 }

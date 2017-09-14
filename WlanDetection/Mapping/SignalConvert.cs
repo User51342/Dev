@@ -5,14 +5,18 @@ using WlanDetection.SignalService;
 
 namespace WlanDetection.Mapping
 {
-    public class SignalConvert : ITypeConverter<Signal, SignalService.Signal>
+    public class SignalConvert : ITypeConverter<Signal, SignalDto>
     {
-        public SignalService.Signal Convert(Signal source, SignalService.Signal destination, ResolutionContext context)
+        public SignalDto Convert(Signal source, SignalDto destination, ResolutionContext context)
         {
-            return new SignalService.Signal() {
-                Geoposition = Mapper.Map< Windows.Devices.Geolocation.Geoposition,Geoposition>(source.Geoposition),
+            return new SignalDto()
+            {
+                Altitude = source.Geoposition.Coordinate.Point.Position.Altitude,
+                Latitude = source.Geoposition.Coordinate.Point.Position.Latitude,
+                Longiture = source.Geoposition.Coordinate.Point.Position.Longitude,
                 RecordTime = source.RecordTime,
-                WifiSignals = Mapper.Map <List<WiFiSignal>, ObservableCollection<SignalService.WifiSignal> > (source.WifiSignals) };
+                WifiSignals = Mapper.Map<List<WiFiSignal>, ObservableCollection<WifiSignalDto>>(source.WifiSignals)
+            };
         }
     }
 }

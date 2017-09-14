@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using System.Collections.Generic;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Devices.Geolocation;
@@ -25,9 +26,8 @@ namespace WlanDetection
             this.Suspending += OnSuspending;
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<Signal, SignalService.Signal>().ConvertUsing(new SignalConvert());
-                cfg.CreateMap<Geoposition, SignalService.Geoposition>().ConvertUsing(new GeopositionConvert());
-                cfg.CreateMap<WiFiSignal, SignalService.WifiSignal>().ConvertUsing(new WifiSignalsConvert());
+                cfg.CreateMap<Signal, SignalService.SignalDto>().ConvertUsing(new SignalConvert());
+                cfg.CreateMap<WiFiSignal, SignalService.WifiSignalDto>().ConvertUsing(new WifiSignalsConvert());
             });
             Mapper.AssertConfigurationIsValid();
 

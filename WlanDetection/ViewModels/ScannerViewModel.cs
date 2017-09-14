@@ -147,9 +147,10 @@ namespace WlanDetection.ViewModels
             }
         }
 
-        private void OnScanUpdated(Signal signal)
+        private async void OnScanUpdated(Signal signal)
         {
             WifiSignals.Clear();
+            OutputText = string.Empty;
             if (signal.WifiSignals.Count() > 0)
             {
                 foreach (var s in signal.WifiSignals.OrderByDescending(s => s.NetworkRssiInDecibelMilliwatts))
@@ -157,11 +158,11 @@ namespace WlanDetection.ViewModels
                     WifiSignals.Add(s);
                 }
 
-                BasicGeoposition basicGeoPosition = new BasicGeoposition() { Latitude = signal.Geoposition.Coordinate.Latitude, Longitude = signal.Geoposition.Coordinate.Longitude };
-                CurrentLocation = new Geopoint(basicGeoPosition);// signal.GeoPosition.Coordinate.Point;
+                //  BasicGeoposition basicGeoPosition = new BasicGeoposition() { Latitude = signal.Geoposition.Coordinate.Point.Position.Latitude, Longitude = signal.Geoposition.Coordinate.Point.Position.Longitude };
+                //  CurrentLocation = new Geopoint(basicGeoPosition);// signal.GeoPosition.Coordinate.Point;
 
-                ActualCoordinates = $"Latitude: {signal.Geoposition.Coordinate.Latitude.ToString()}, Longitude: {signal.Geoposition.Coordinate.Longitude.ToString()}";
-                _TransferService.Save(signal);
+                ActualCoordinates = $"Latitude: {signal.Geoposition.Coordinate.Point.Position.Latitude.ToString()}, Longitude: {signal.Geoposition.Coordinate.Point.Position.Longitude.ToString()}";
+                await _TransferService.Save(signal);
             }
             else
             {

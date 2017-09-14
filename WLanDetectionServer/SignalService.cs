@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using WLanDetectionServer.Entities;
 
 namespace WLanDetectionServer
 {
     public class SignalService : ISignalService
     {
-        public int Save(Signal signals)
+        public int Save(SignalDto signals)
         {
-            return 1;
-        }
-
-        public int SaveList(List<Signal> signals)
-        {
-            return signals.Count;
+            var result = 0;
+            using (var ctx = new SignalsContext())
+            {
+                ctx.Signals.Add(signals);
+                result = ctx.SaveChanges();
+            }
+            return result;
         }
     }
 }

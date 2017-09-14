@@ -1,8 +1,14 @@
-﻿namespace WLanDetectionServer
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WLanDetectionServer.Entities
 {
-    public class WifiSignal
+    [Table("WifiSignals")]
+    public class WifiSignalDto
     {
         #region Properties
+        [Key]
+        public int WifiSignalId { get; set; }
         public string MacAddress { get; set; }
         public string Ssid { get; set; }
         public string NetworkKind { get; set; }
