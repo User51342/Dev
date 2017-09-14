@@ -4,6 +4,11 @@ namespace WlanDetection
 {
     public interface ITransferService
     {
-        Task<int> Save(Signal signal);
+        Task<int> CommitToServer(Signal signal);
+        int GetSuspendedSignals();
+        void Resume();
+        void Suspend();
+        
+
     }
 }

@@ -162,17 +162,18 @@ namespace WlanDetection.ViewModels
                 //  CurrentLocation = new Geopoint(basicGeoPosition);// signal.GeoPosition.Coordinate.Point;
 
                 ActualCoordinates = $"Latitude: {signal.Geoposition.Coordinate.Point.Position.Latitude.ToString()}, Longitude: {signal.Geoposition.Coordinate.Point.Position.Longitude.ToString()}";
-                await _TransferService.Save(signal);
+                await _TransferService.CommitToServer(signal);
             }
             else
             {
-                OutputText = "No Wifi signals." + Environment.NewLine;
+                OutputText = "No Wifi signals."; // + Environment.NewLine;
             }
 
             foreach (var e in signal.Errors)
             {
-                OutputText += e + Environment.NewLine;
+                OutputText += e; // + Environment.NewLine;
             }
+            OutputText += string.Format($"(S: {_TransferService.GetSuspendedSignals()})");
         }
         #endregion
     }

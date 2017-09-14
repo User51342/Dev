@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel;
@@ -8,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using WlanDetection.Mapping;
+using WlanDetection.ViewModels;
 
 namespace WlanDetection
 {
@@ -24,6 +26,7 @@ namespace WlanDetection
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.Resuming += OnResuming;
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Signal, SignalService.SignalDto>().ConvertUsing(new SignalConvert());
@@ -32,6 +35,8 @@ namespace WlanDetection
             Mapper.AssertConfigurationIsValid();
 
         }
+
+
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -72,6 +77,8 @@ namespace WlanDetection
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+            var transferService = (TransferService)ServiceLocator.Current.GetInstance(typeof(ITransferService));
+            transferService.Resume();
         }
 
         /// <summary>
@@ -94,8 +101,15 @@ namespace WlanDetection
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+            var transferService = (TransferService)ServiceLocator.Current.GetInstance(typeof(ITransferService));
+            transferService.Suspend();
             deferral.Complete();
+        }
+
+        private void OnResuming(object sender, object e)
+        {
+            var transferService = (TransferService)ServiceLocator.Current.GetInstance(typeof(ITransferService));
+            transferService.Resume();
         }
     }
 }
