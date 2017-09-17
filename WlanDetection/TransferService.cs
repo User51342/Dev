@@ -85,12 +85,13 @@ namespace WlanDetection
 
             var memoryStream = new MemoryStream();
             var sr = new StreamReader(memoryStream);
-
-
-            XmlDocument xmlDocument = new XmlDocument();
-            var fileString = File.ReadAllText(Path.Combine(localFolder.Path, _SuspendedFileName));
-            var stringReader = new StringReader(fileString);
-            _SuspendedSignals = (List<SignalDto>)serializer.Deserialize(stringReader);
+            if (File.Exists(Path.Combine(localFolder.Path, _SuspendedFileName)))
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                var fileString = File.ReadAllText(Path.Combine(localFolder.Path, _SuspendedFileName));
+                var stringReader = new StringReader(fileString);
+                _SuspendedSignals = (List<SignalDto>)serializer.Deserialize(stringReader);
+            }
         }
         #endregion
 

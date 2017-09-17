@@ -24,6 +24,8 @@ namespace WlanDetection.ViewModels
         private string _OutputText;
         private Geopoint _CurrentLocation;
         private ITransferService _TransferService;
+        private RelayCommand _GpsActiveCommand;
+        private bool _IsGpsActive;
         #endregion
 
         #region Properties
@@ -39,6 +41,28 @@ namespace WlanDetection.ViewModels
             {
                 _ActualCoordinates = value;
                 RaisePropertyChanged("ActualCoordinates");
+            }
+        }
+
+        public RelayCommand GpsActiveCommand
+        {
+            get
+            {
+                return _GpsActiveCommand;
+            }
+            set
+            {
+                _GpsActiveCommand = value;
+                RaisePropertyChanged("GpsActiveCommand");
+            }
+        }
+        private bool IsGpsActive
+        {
+            get { return _IsGpsActive; }
+            set
+            {
+                _IsGpsActive = value;
+                RaisePropertyChanged("IsGpsActive");
             }
         }
 
@@ -107,6 +131,7 @@ namespace WlanDetection.ViewModels
         public ScannerViewModel(ITransferService transferService)
         {
             ScanStartCommand = new RelayCommand(ExecuteScanStartCommand);
+            GpsActiveCommand = new RelayCommand(ExecuteGpsActiveCommand);
             _TransferService = transferService;
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
@@ -126,12 +151,22 @@ namespace WlanDetection.ViewModels
             ExecuteScan();
         }
 
+        private void ExecuteGpsActiveCommand()
+        {
+            IsGpsActive = !IsGpsActive;
+            if (_Scanner != null)
+            {
+                _Scanner.IsGpsActive = IsGpsActive;
+            }
+        }
+
         private void ExecuteScan()
         {
             if (_Scanner == null)
             {
                 _Scanner = new Scanner();
-                _Scanner.ScanUpdated += OnScanUpdated; ;
+                _Scanner.IsGpsActive = IsGpsActive;
+                _Scanner.ScanUpdated += OnScanUpdated;
             }
             Scanning = !Scanning;
             if (Scanning)

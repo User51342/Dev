@@ -8,7 +8,7 @@
     d:DesignHeight="400"
     d:DesignWidth="400">
 
-    <Grid>
+    <Grid Background="Black" RequestedTheme="Dark">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
 
@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
         <StackPanel Name="spButtons" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Padding="10,0,0,0">
             <Button Name="btnScan" Command="{Binding ScanStartCommand}" Content="{Binding StartScanButtonText}"></Button>
-            <TextBlock Padding="10" Text="{Binding ActualCoordinates}"></TextBlock>
+            <TextBlock Padding="10" Text="{Binding ActualCoordinates}"></TextBlock><AppBarToggleButton Content="Gps" Command="{Binding GpsActiveCommand}"/>
         </StackPanel>
         <my:MapControl Center="{Binding CurrentLocation}" ZoomLevel="12" LandmarksVisible="True" MapServiceToken="zQnWmhYXk6CWsfrBorCq~WL0ls9EGwyojPbJLjBsZnA~Ap0rznpPJi80N-hpJj1V3sis5uZbtryi7__TDPbDNZaYq1syds-4cj6uOXj5pQyp" Grid.Row="3" Visibility="Collapsed"/>
         <ListView ItemsSource="{Binding WifiSignals}"  Grid.Row="1">

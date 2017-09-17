@@ -33,7 +33,8 @@ namespace WlanDetection
                 cfg.CreateMap<WiFiSignal, SignalService.WifiSignalDto>().ConvertUsing(new WifiSignalsConvert());
             });
             Mapper.AssertConfigurationIsValid();
-
+            Geolocator geolocator = new Geolocator();
+             geolocator.GetGeopositionAsync();
         }
 
 

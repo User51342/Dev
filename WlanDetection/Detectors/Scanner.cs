@@ -18,6 +18,10 @@ namespace WlanDetection.Detectors
         public event SignalChangeHandler ScanUpdated;
         #endregion
 
+        #region Properties
+        public bool IsGpsActive { get; set; }
+        #endregion
+
         #region Public implementaions
         public void StartScanner()
         {
@@ -47,15 +51,17 @@ namespace WlanDetection.Detectors
             List<WiFiSignal> wifiSignals = new List<WiFiSignal>();
             try
             {
-                 wifiSignals = await _Wlan.Scan();
+                wifiSignals = await _Wlan.Scan();
             }
             catch (Exception wex)
             {
                 signal.Errors.Add(wex.Message);
             }
-            var position = await Gps.GetPosition();
-
-            signal.Geoposition = position;
+            if (IsGpsActive)
+            {
+                var position = await Gps.GetPosition();
+                signal.Geoposition = position;
+            }
             signal.WifiSignals = wifiSignals;
 
             ScanUpdated(signal);
