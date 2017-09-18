@@ -20,6 +20,7 @@ namespace WlanDetection.Detectors
 
         #region Properties
         public bool IsGpsActive { get; set; }
+        public bool IsWlanActive { get; set; }
         #endregion
 
         #region Public implementaions
@@ -36,6 +37,7 @@ namespace WlanDetection.Detectors
         public void StopScanner()
         {
             timer.Stop();
+            timer.Tick -= Timer_Tick;
         }
         #endregion
 
@@ -49,23 +51,26 @@ namespace WlanDetection.Detectors
         {
             Signal signal = new Signal();
             List<WiFiSignal> wifiSignals = new List<WiFiSignal>();
-            try
+            if (IsWlanActive)
             {
-                wifiSignals = await _Wlan.Scan();
+                try
+                {
+                    wifiSignals = await _Wlan.Scan();
+                }
+                catch (Exception wex)
+                {
+                    signal.Errors.Add(wex.Message);
+                }
+                signal.WifiSignals = wifiSignals;
             }
-            catch (Exception wex)
-            {
-                signal.Errors.Add(wex.Message);
-            }
+
             if (IsGpsActive)
             {
                 var position = await Gps.GetPosition();
                 signal.Geoposition = position;
             }
-            signal.WifiSignals = wifiSignals;
 
             ScanUpdated(signal);
-
         }
 
         //protected virtual void OnScanUpdated(SignalEventArgs s)

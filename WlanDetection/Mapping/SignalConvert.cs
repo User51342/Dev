@@ -9,14 +9,18 @@ namespace WlanDetection.Mapping
     {
         public SignalDto Convert(Signal source, SignalDto destination, ResolutionContext context)
         {
-            return new SignalDto()
+            if (source.Geoposition != null)
             {
-                Altitude = source.Geoposition.Coordinate.Point.Position.Altitude,
-                Latitude = source.Geoposition.Coordinate.Point.Position.Latitude,
-                Longiture = source.Geoposition.Coordinate.Point.Position.Longitude,
-                RecordTime = source.RecordTime,
-                WifiSignals = Mapper.Map<List<WiFiSignal>, ObservableCollection<WifiSignalDto>>(source.WifiSignals)
-            };
+                return new SignalDto()
+                {
+                    Altitude = source.Geoposition.Coordinate.Point.Position.Altitude,
+                    Latitude = source.Geoposition.Coordinate.Point.Position.Latitude,
+                    Longiture = source.Geoposition.Coordinate.Point.Position.Longitude,
+                    RecordTime = source.RecordTime,
+                    WifiSignals = Mapper.Map<List<WiFiSignal>, ObservableCollection<WifiSignalDto>>(source.WifiSignals)
+                };
+            }
+            return new SignalDto();
         }
     }
 }

@@ -4,20 +4,30 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModels="using:WlanDetection.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="400"
     d:DesignWidth="400">
+    <d:DesignProperties.DataContext>
+        <ViewModels:ScannerViewModel />
+    </d:DesignProperties.DataContext>
 
     <Grid Background="Black" RequestedTheme="Dark">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
-
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <StackPanel Name="spButtons" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Padding="10,0,0,0">
-            <Button Name="btnScan" Command="{Binding ScanStartCommand}" Content="{Binding StartScanButtonText}"></Button>
-            <TextBlock Padding="10" Text="{Binding ActualCoordinates}"></TextBlock><AppBarToggleButton Content="Gps" Command="{Binding GpsActiveCommand}"/>
+        <StackPanel Name="spButtons" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Padding="10">
+            <Button Name="btnScan" Command="{Binding ScanStartCommand}" Content="{Binding StartScanButtonText}"  Width="130" Height="50" Margin="0,0,10,0"></Button>
+            <ToggleButton IsChecked="{Binding IsGpsActive}"   Command="{Binding GpsActiveCommand}" Width="80" Height="50"  Margin="0,0,10,0" IsEnabled="{Binding IsGpsEnabled}">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Gps</TextBlock>
+            </ToggleButton>
+            <ToggleButton IsChecked="{Binding IsWlanActive}" IsEnabled="{Binding IsWlanEnabled}" Command="{Binding WlanActiveCommand}" Width="80" Height="50">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Wlan</TextBlock>
+            </ToggleButton>
+   
         </StackPanel>
         <my:MapControl Center="{Binding CurrentLocation}" ZoomLevel="12" LandmarksVisible="True" MapServiceToken="zQnWmhYXk6CWsfrBorCq~WL0ls9EGwyojPbJLjBsZnA~Ap0rznpPJi80N-hpJj1V3sis5uZbtryi7__TDPbDNZaYq1syds-4cj6uOXj5pQyp" Grid.Row="3" Visibility="Collapsed"/>
         <ListView ItemsSource="{Binding WifiSignals}"  Grid.Row="1">
@@ -31,6 +41,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <TextBox Name="txbReport" TextWrapping="Wrap" AcceptsReturn="True" Grid.Row="2" Text="{Binding OutputText}" BorderThickness="0"></TextBox>
+        <TextBlock Padding="10" Text="{Binding ActualCoordinates}" Grid.Row="2"></TextBlock>
+        <TextBox Name="txbReport" TextWrapping="Wrap" AcceptsReturn="True" Grid.Row="3" Text="{Binding OutputText}" BorderThickness="0"></TextBox>
     </Grid>
 </UserControl>

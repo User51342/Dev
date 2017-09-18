@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -25,7 +26,9 @@ namespace WlanDetection.ViewModels
         private Geopoint _CurrentLocation;
         private ITransferService _TransferService;
         private RelayCommand _GpsActiveCommand;
-        private bool _IsGpsActive;
+        private RelayCommand _WlanActiveCommand;
+        private bool _IsGpsActive = true;
+        private bool _IsWlanActive = true;
         #endregion
 
         #region Properties
@@ -53,17 +56,57 @@ namespace WlanDetection.ViewModels
             set
             {
                 _GpsActiveCommand = value;
-                RaisePropertyChanged("GpsActiveCommand");
             }
         }
-        private bool IsGpsActive
+
+        public RelayCommand WlanActiveCommand
+        {
+            get { return _WlanActiveCommand; }
+            set
+            {
+                _WlanActiveCommand = value;
+            }
+        }
+
+        public bool IsGpsActive
         {
             get { return _IsGpsActive; }
             set
             {
                 _IsGpsActive = value;
+                if(!IsWlanActive)
+                {
+                    IsWlanActive = true;
+                }
                 RaisePropertyChanged("IsGpsActive");
             }
+        }
+
+        public bool IsWlanActive
+        {
+            get
+            {
+                return _IsWlanActive;
+            }
+            set
+            {
+                _IsWlanActive = value;
+                if(!IsGpsActive)
+                {
+                    IsGpsActive = true;
+                }
+                RaisePropertyChanged("IsWlanActive");
+            }
+        }
+
+        public bool IsGpsEnabled
+        {
+            get { return !Scanning; }
+        }
+
+        public bool IsWlanEnabled
+        {
+            get { return !Scanning; }
         }
 
         public string OutputText
@@ -103,6 +146,8 @@ namespace WlanDetection.ViewModels
                         StartScanButtonText = StartScanText;
                     }
                     RaisePropertyChanged("Scanning");
+                    RaisePropertyChanged("IsGpsEnabled");
+                    RaisePropertyChanged("IsWlanEnabled");
                 }
             }
         }
@@ -128,10 +173,16 @@ namespace WlanDetection.ViewModels
         #endregion
 
         #region Construction / Initialization / Deconstruction
+        public ScannerViewModel()
+        {
+        }
+
+        [PreferredConstructor]
         public ScannerViewModel(ITransferService transferService)
         {
             ScanStartCommand = new RelayCommand(ExecuteScanStartCommand);
             GpsActiveCommand = new RelayCommand(ExecuteGpsActiveCommand);
+            WlanActiveCommand = new RelayCommand(ExecuteWlanActiveCommand);
             _TransferService = transferService;
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
@@ -142,6 +193,7 @@ namespace WlanDetection.ViewModels
                 WifiSignals.Add(new WiFiSignal() { Ssid = "Fiveth net", ChannelCenterFrequencyInKilohertz = 1, NetworkRssiInDecibelMilliwatts = -66, NetworkKind = "Ccmp" });
                 WifiSignals.Add(new WiFiSignal() { Ssid = "Sixth net", ChannelCenterFrequencyInKilohertz = 1, NetworkRssiInDecibelMilliwatts = -67, NetworkKind = "Ccmp" });
             }
+            _Scanner = new Scanner();
         }
         #endregion
 
@@ -154,20 +206,17 @@ namespace WlanDetection.ViewModels
         private void ExecuteGpsActiveCommand()
         {
             IsGpsActive = !IsGpsActive;
-            if (_Scanner != null)
-            {
-                _Scanner.IsGpsActive = IsGpsActive;
-            }
+        }
+
+        private void ExecuteWlanActiveCommand()
+        {
+            IsWlanActive = !IsWlanActive;
         }
 
         private void ExecuteScan()
         {
-            if (_Scanner == null)
-            {
-                _Scanner = new Scanner();
-                _Scanner.IsGpsActive = IsGpsActive;
-                _Scanner.ScanUpdated += OnScanUpdated;
-            }
+            _Scanner.ScanUpdated += OnScanUpdated;
+
             Scanning = !Scanning;
             if (Scanning)
             {
@@ -186,7 +235,7 @@ namespace WlanDetection.ViewModels
         {
             WifiSignals.Clear();
             OutputText = string.Empty;
-            if (signal.WifiSignals.Count() > 0)
+            if (signal.WifiSignals != null && signal.WifiSignals.Count() > 0)
             {
                 foreach (var s in signal.WifiSignals.OrderByDescending(s => s.NetworkRssiInDecibelMilliwatts))
                 {
@@ -196,7 +245,10 @@ namespace WlanDetection.ViewModels
                 //  BasicGeoposition basicGeoPosition = new BasicGeoposition() { Latitude = signal.Geoposition.Coordinate.Point.Position.Latitude, Longitude = signal.Geoposition.Coordinate.Point.Position.Longitude };
                 //  CurrentLocation = new Geopoint(basicGeoPosition);// signal.GeoPosition.Coordinate.Point;
 
-                ActualCoordinates = $"Latitude: {signal.Geoposition.Coordinate.Point.Position.Latitude.ToString()}, Longitude: {signal.Geoposition.Coordinate.Point.Position.Longitude.ToString()}";
+                if (signal.Geoposition != null)
+                {
+                    ActualCoordinates = $"Latitude: {signal.Geoposition.Coordinate.Point.Position.Latitude.ToString()}, Longitude: {signal.Geoposition.Coordinate.Point.Position.Longitude.ToString()}";
+                }
                 await _TransferService.CommitToServer(signal);
             }
             else
